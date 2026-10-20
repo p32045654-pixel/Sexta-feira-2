@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEXTA-FEIRA MK-45</title>
+<style>
+  body{background:#02060c;color:#00eaff;font-family:monospace;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0}
+  h1{color:#ff3b30;letter-spacing:5px;text-shadow:0 0 15px #ff3b30;font-size:22px}
+  #log{width:90%;background:#000a14;border:1px solid #00eaff33;padding:10px;border-radius:8px;font-size:12px;min-height:60px;margin:10px;color:#8af}
+  #core{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#00eaff 0%,#001a22 60%);border:3px solid #00eaff;box-shadow:0 0 40px #00eaff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s}
+  #core.ouvindo{background:radial-gradient(circle,#ff3b30 0%,#220000 60%);border-color:#ff3b30;box-shadow:0 0 60px #ff3b30;animation:pulse 0.6s infinite}
+  @keyframes pulse{50%{transform:scale(1.08)}}
+</style>
+</head>
+<body>
+<h1>SEXTA-FEIRA</h1>
+<div id="log">1º TOQUE NO NÚCLEO PARA ACORDAR</div>
+<div id="core"><span id="txt">ACORDAR</span></div>
+<p style="font-size:10px;color:#555;margin-top:20px">Diga: Sexta-feira abrir Free Fire / YouTube / TikTok / Kwai / Instagram</p>
+
+<script>
+const log = document.getElementById('log');
+const core = document.getElementById('core');
+const txt = document.getElementById('txt');
+let acordada = false;
+
+function falar(t){
+  speechSynthesis.cancel();
+  let m = new SpeechSynthesisUtterance(t);
+  m.lang = 'pt-BR'; m.rate=1.1;
+  log.innerText = "SEXTA: " + t;
+  speechSynthesis.speak(m);
+}
+
+function abrir(nome, pkg, url){
+  falar("Sim chefe, abrindo "+nome);
+  setTimeout(()=>{
+    window.location.href = "intent://#Intent;package="+pkg+";S.browser_fallback_url="+encodeURIComponent(url)+";end";
+  },800);
+}
+
+function ouvir(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ log.innerText="Abre no Chrome!"; return; }
+  const rec = new SR();
+  rec.lang='pt-BR'; rec.start();
+  core.classList.add('ouvindo'); txt.innerText="OUVINDO";
+  log.innerText="Ouvindo... pode falar";
+
+  rec.onresult = (e)=>{
+    let comando = e.results[0][0].transcript.toLowerCase();
+    log.innerText = "Você
